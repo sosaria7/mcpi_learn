@@ -14,7 +14,7 @@ class Cell:
 
     def __setattr__(self,name,value):
         if name.startswith("STATE_") or name.startswith("WALL_"):
-            raise self.ConstError, "Can't rebind const(%s)"%name
+            raise self.ConstError("Can't rebind const(%s)" % name)
         self.__dict__[name]=value
 
     STATE_NONE = 0
