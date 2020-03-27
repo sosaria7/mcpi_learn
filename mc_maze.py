@@ -1,4 +1,5 @@
 #-*- coding: utf-8 -*-
+# Copyright 2020, Keonwoo Kim. Licensed under the BSD 2-clause license.
 
 from mcpi.minecraft import Minecraft
 from mcpi import block
