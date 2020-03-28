@@ -177,6 +177,7 @@ class Maze:
     def build(self, mc, pos):
         wallId = block.BRICK_BLOCK
         #wallId = block.BEDROCK
+        wallId2 = block.BEDROCK
 
         pos.x -= 1
         pos.z -= 1
@@ -198,23 +199,36 @@ class Maze:
         for y in range(self.height):
             # 윗쪽 벽
             for x in range(self.width):
-                mc.setBlocks( pos.x + x * 3, pos.y, pos.z + y * 3, pos.x + x * 3, pos.y + 3, pos.z + y * 3, wallId)
+                mc.setBlocks( pos.x + x * 3, pos.y, pos.z + y * 3,
+                              pos.x + x * 3, pos.y + 1, pos.z + y * 3, wallId)
+                mc.setBlocks( pos.x + x * 3, pos.y + 2, pos.z + y * 3,
+                              pos.x + x * 3, pos.y + 2, pos.z + y * 3, wallId2)
                 if self.maze[x][y].up == Cell.WALL_BLOCKED:
-                    mc.setBlocks( pos.x + x * 3 + 1, pos.y, pos.z + y * 3, pos.x + x * 3 + 2, pos.y + 3, pos.z + y * 3, wallId)
+                    mc.setBlocks( pos.x + x * 3 + 1, pos.y, pos.z + y * 3,
+                                  pos.x + x * 3 + 2, pos.y + 1, pos.z + y * 3, wallId)
+                    mc.setBlocks( pos.x + x * 3 + 1, pos.y + 2, pos.z + y * 3,
+                                  pos.x + x * 3 + 2, pos.y + 2, pos.z + y * 3, wallId2)
 
             # 마지막 오른쪽 벽
-            mc.setBlocks(pos.x + self.width * 3, pos.y, pos.z + y * 3, pos.x + self.width * 3, pos.y + 3, pos.z + y * 3, wallId)
+            mc.setBlocks(pos.x + self.width * 3, pos.y, pos.z + y * 3,
+                         pos.x + self.width * 3, pos.y + 1, pos.z + y * 3, wallId)
+            mc.setBlocks(pos.x + self.width * 3, pos.y + 2, pos.z + y * 3,
+                         pos.x + self.width * 3, pos.y + 2, pos.z + y * 3, wallId2)
 
             # 통로 왼쪽 벽
             for x in range(self.width):
                 if self.maze[x][y].left == Cell.WALL_BLOCKED:
                     mc.setBlocks(pos.x + x * 3, pos.y, pos.z + y * 3 + 1,
-                                 pos.x + x * 3, pos.y + 3, pos.z + y * 3 + 2, wallId)
+                                 pos.x + x * 3, pos.y + 1, pos.z + y * 3 + 2, wallId)
+                    mc.setBlocks(pos.x + x * 3, pos.y + 2, pos.z + y * 3 + 1,
+                                 pos.x + x * 3, pos.y + 2, pos.z + y * 3 + 2, wallId2)
 
             #마지막 오른쪽 벽, 마지막 라인의 마지막 오른쪽은 출력하지 않는다.
             if y != self.height - 1:
                 mc.setBlocks(pos.x + self.width * 3, pos.y, pos.z + y * 3 + 1,
-                             pos.x + self.width * 3, pos.y + 3, pos.z + y * 3 + 2, wallId)
+                             pos.x + self.width * 3, pos.y + 1, pos.z + y * 3 + 2, wallId)
+                mc.setBlocks(pos.x + self.width * 3, pos.y + 2, pos.z + y * 3 + 1,
+                             pos.x + self.width * 3, pos.y + 2, pos.z + y * 3 + 2, wallId2)
 
         # 맨 위 벽
         mc.setBlocks(pos.x, pos.y, pos.z, pos.x + self.width * 3, pos.y + 3, pos.z, 95, 14)
@@ -272,12 +286,13 @@ if __name__ == '__main__':
                     mc.postToChat("usage: clear [width height]")
                     continue
 
-                if width > 100 or width < 4 or height > 100 or height < 4:
+                if width > 300 or width < 4 or height > 300 or height < 4:
                     mc.postToChat("clear size error")
                     continue
 
                 id = e.entityId
                 pos = mc.entity.getTilePos(id)
+
                 mc.setBlocks(pos.x - width/2, pos.y - 2, pos.z - height/2, pos.x + width/2, pos.y + 100, pos.z + height/2, block.AIR)
                 mc.setBlocks(pos.x - width/2, pos.y - 2, pos.z - height/2, pos.x + width/2, pos.y -1, pos.z + height/2, block.GRASS)
 
